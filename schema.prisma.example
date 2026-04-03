@@ -1,0 +1,62 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// Enums
+
+// User roles for access control
+enum Role {
+  ADMIN
+  ANALYST
+  VIEWER
+}
+
+// Financial transaction type
+enum TransactionType {
+  INCOME
+  EXPENSE
+}
+
+// User table
+
+model User {
+  id        Int      @id @default(autoincrement()) // primary key
+  name      String
+  email     String   @unique                        // login email
+  password  String                                 // hashed password
+  role      Role                                   // ADMIN / ANALYST / VIEWER
+  status    Boolean  @default(true)                // active or disabled
+  createdAt DateTime @default(now())
+
+  // relation: one user → many transactions
+  transactions Transaction[]
+
+  @@index([email])
+}
+
+// Financial transactions
+
+model Transaction {
+  id          Int      @id @default(autoincrement()) // primary key
+  amount      Decimal  @db.Decimal(12,2)             // money value
+  type        TransactionType                        // income or expense
+  category    String                                 // e.g. food, travel
+  description String?                                // optional notes
+  date        DateTime                               // transaction date
+  createdAt   DateTime @default(now())
+  isDeleted   Boolean  @default(false)               // soft delete
+
+  // relation to User
+  createdBy   Int
+  user        User @relation(fields: [createdBy], references: [id])
+
+  // indexes for faster queries
+  @@index([createdBy])
+  @@index([date])
+  @@index([type])
+  @@index([category])
+}
