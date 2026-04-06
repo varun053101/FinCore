@@ -12,10 +12,18 @@ const authenticate = asyncHandler(async (req, res, next) => {
 
   const token = authHeader.split(" ")[1];
 
-  const decoded = jwt.verify(token, process.env.JWT_SECRET);
+  let decoded;
+  try {
+    decoded = jwt.verify(token, process.env.JWT_SECRET);
+  } catch (err) {
+    if (err.name === "TokenExpiredError") {
+      throw new AppError("Your session has expired. Please log in again.", 401);
+    }
+    throw new AppError("Invalid token. Please log in again.", 401);
+  }
 
   const user = await prisma.user.findUnique({
-    where: { id: decoded.id }
+    where: { id: decoded.id },
   });
 
   if (!user) {
