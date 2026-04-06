@@ -1,5 +1,6 @@
 require("dotenv").config();
 const express = require("express");
+const helmet = require("helmet");
 const { router: authRoutes } = require("./routes/auth.routes");
 const { router: userRoutes } = require("./routes/user.routes");
 const { router: transactionRoutes } = require("./routes/transaction.routes");
@@ -9,8 +10,15 @@ const requestLogger = require("./middleware/logger");
 const errorHandler = require("./utils/errorHandler");
 const swaggerUi = require("swagger-ui-express");
 const swaggerSpec = require("./config/swagger");
+const { globalLimiter } = require("./middleware/rateLimiter");
 
 const app = express();
+
+// Security headers
+app.use(helmet());
+
+// Global rate limiter — applied to every route
+app.use(globalLimiter);
 
 // Parse incoming JSON bodies; cap at 10 kb to guard against oversized payloads
 app.use(express.json({ limit: "10kb" }));
