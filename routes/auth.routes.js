@@ -1,6 +1,7 @@
 const express = require("express");
 const { authenticate } = require("../middleware/auth");
 const { validateRegister, validateLogin } = require("../middleware/validation");
+const { loginLimiter, registerLimiter } = require("../middleware/rateLimiter");
 
 const { registerUser, loginUser, getMe } = require("../controllers/auth.controller");
 
@@ -59,7 +60,7 @@ const router = express.Router();
  *       422:
  *         description: Validation error
  */
-router.post("/register", validateRegister, registerUser);
+router.post("/register", registerLimiter, validateRegister, registerUser);
 
 /**
  * @swagger
@@ -102,7 +103,7 @@ router.post("/register", validateRegister, registerUser);
  *       422:
  *         description: Validation error
  */
-router.post("/login", validateLogin, loginUser);
+router.post("/login", loginLimiter, validateLogin, loginUser);
 
 /**
  * @swagger
