@@ -131,6 +131,25 @@ Server default: `http://localhost:5000`
 - Auth register: `POST /api/auth/register`
 - Auth login: `POST /api/auth/login`
 
+## 7) Explore API Docs (Swagger UI)
+
+With the server running, open:
+
+```
+http://localhost:5000/api-docs
+```
+
+You should see the **FinCore API** page with 4 tag groups: **Auth**, **Dashboard**, **Transactions**, **Users**.
+
+**To test protected routes directly in Swagger UI:**
+
+1. Expand `POST /api/auth/login` → click **Try it out** → enter credentials → **Execute**
+2. Copy the `token` value from the response
+3. Click the **Authorize 🔒** button (top-right)
+4. Enter `Bearer <your_token>` and click **Authorize**
+5. All subsequent requests from Swagger UI will include your JWT
+
+
 ## Suggested Postman Flow
 
 1. Register admin (with `role=ADMIN` + `adminSecretKey`)

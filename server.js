@@ -7,6 +7,8 @@ const { router: dashboardRoutes } = require("./routes/dashboard.routes");
 const prisma = require("./config/prisma");
 const requestLogger = require("./middleware/logger");
 const errorHandler = require("./utils/errorHandler");
+const swaggerUi = require("swagger-ui-express");
+const swaggerSpec = require("./config/swagger");
 
 const app = express();
 
@@ -26,6 +28,9 @@ app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/transactions", transactionRoutes);
 app.use("/api/dashboard", dashboardRoutes);
+
+// Swagger UI — must come before the error handler
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // Catch-all error handler must come after all routes
 app.use(errorHandler);

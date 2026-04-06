@@ -9,6 +9,7 @@ A backend API for a finance dashboard that provides role-based access control, f
 - **Database**: PostgreSQL
 - **Auth**: JSON Web Tokens (JWT)
 - **Logging**: Morgan (`dev` format in development, compact in production)
+- **API Docs**: Swagger UI (OpenAPI 3.0) via `swagger-ui-express` + `swagger-jsdoc`
 
 ## Quick Start
 
@@ -41,17 +42,40 @@ GET /health
 
 ---
 
+## API Documentation
+
+Once the server is running, interactive API docs are available at:
+
+```
+http://localhost:5000/api-docs
+```
+
+> The Swagger UI lists all 11 endpoints across 4 tag groups — **Auth**, **Users**, **Transactions**, and **Dashboard**.
+
+### How to authorize in Swagger UI
+
+1. Call `POST /api/auth/login` with your credentials
+2. Copy the `token` from the response
+3. Click the **Authorize 🔒** button (top-right of the page)
+4. Paste the token as `Bearer <token>` and click **Authorize**
+5. All protected endpoints will now include your JWT automatically
+
+---
+
 ## Project Structure
 
 ```
 FinCore/
-├── config/         # Prisma client singleton
-├── controllers/    # Route handler functions
-├── middleware/     # Auth, RBAC, validation, logging
-├── prisma/         # Schema and migration files
-├── routes/         # Express router definitions
-├── services/       # Business logic layer
-└── utils/          # AppError, asyncHandler, response helpers, sanitize
+├── config/
+│   ├── prisma.js       # Prisma client singleton
+│   └── swagger.js      # OpenAPI spec (components, schemas, security)
+├── controllers/        # Route handler functions
+├── docs/               # Markdown documentation
+├── middleware/         # Auth, RBAC, validation, logging
+├── prisma/             # Schema and migration files
+├── routes/             # Express routers (with Swagger JSDoc annotations)
+├── services/           # Business logic layer
+└── utils/              # AppError, asyncHandler, response helpers, sanitize
 ```
 
 ## Roles & Permissions
@@ -74,3 +98,4 @@ FinCore/
 - [Architecture & Data Flow](docs/architecture.md)
 - [Authentication & Access Control](docs/authentication.md)
 - [API Reference](docs/api.md)
+- **Interactive Docs** → [`/api-docs`](http://localhost:5000/api-docs) (Swagger UI, requires running server)

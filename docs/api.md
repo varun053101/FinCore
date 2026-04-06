@@ -1,6 +1,12 @@
 # API Reference
 
+> **Interactive docs (recommended):** Start the server and open **[http://localhost:5000/api-docs](http://localhost:5000/api-docs)** in your browser.
+> The Swagger UI lets you explore every endpoint, see request/response schemas, and execute calls directly after authorizing with a JWT.
+>
+> The sections below are a static quick-reference. For the authoritative, always-up-to-date spec, use the Swagger UI.
+
 Base URL (local): `http://localhost:5000`
+
 
 ## Health
 
