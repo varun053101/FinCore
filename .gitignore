@@ -1,33 +1,10 @@
-# Dependencies and build output
+# Dependencies
 node_modules/
-dist/
-build/
 
-# Environment — never commit real credentials
+
+# Environment
 .env
-.env.local
-.env.*.local
 
-# Prisma generated client
+# Prisma generated 
 /generated/
 generated/prisma/
-
-# Logs
-logs/
-*.log
-npm-debug.log*
-
-# OS artefacts
-.DS_Store
-Thumbs.db
-Desktop.ini
-
-# Editor directories
-.vscode/
-.idea/
-*.swp
-*.swo
-
-# Coverage reports
-coverage/
-.nyc_output/
